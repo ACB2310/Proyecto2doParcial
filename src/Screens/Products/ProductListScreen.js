@@ -29,12 +29,12 @@ export default function ProductListScreen({ navigation }) {
 
       const data = await response.json();
       if (!Array.isArray(data)) {
-        throw new Error("Formato de datos invalido.");
+        throw new Error("Formato de datos Erroneo.");
       }
 
       setProducts(data);
     } catch (error) {
-      setErrorMessage(error.message || "Error inesperado al obtener productos.");
+      setErrorMessage(error.message || "Error Desconocido al obtener productos.");
       setProducts([]);
     } finally {
       setLoading(false);

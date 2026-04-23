@@ -12,7 +12,7 @@ export default function NavigationStack() {
       <Stack.Navigator
         initialRouteName="ProductList"
         screenOptions={{
-          headerStyle: { backgroundColor: "#ffffff" },
+          headerStyle: { backgroundColor: "#fffff0" },
           headerTintColor: "#0f172a",
           headerTitleStyle: { fontWeight: "700" },
         }}
