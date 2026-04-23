@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Ionicons } from "@expo/vector-icons";
 
 import CartScreen from "../Screens/CartScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
@@ -66,6 +67,13 @@ export default function MainTabs() {
           title: "Productos",
           headerShown: false,
           tabBarLabel: "Productos",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "storefront" : "storefront-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -75,6 +83,13 @@ export default function MainTabs() {
           title: "Carrito",
           tabBarLabel: "Carrito",
           tabBarBadge: cartCount > 0 ? cartCount : undefined,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "cart" : "cart-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -83,6 +98,13 @@ export default function MainTabs() {
         options={{
           title: "Perfil",
           tabBarLabel: "Perfil",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "person-circle" : "person-circle-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
