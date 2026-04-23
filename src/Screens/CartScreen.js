@@ -3,6 +3,7 @@ import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react
 import CardItem from "../components/CardItem";
 import EmptyState from "../components/EmptyState";
 import { useCart } from "../context/CartContext";
+import { CLUB_THEME } from "../theme/clubTheme";
 
 const formatPrice = (value) => `$${Number(value || 0).toFixed(2)} USD`;
 
@@ -56,6 +57,7 @@ export default function CartScreen() {
         )}
         ListFooterComponent={
           <View style={styles.summaryCard}>
+            <Text style={styles.summaryTitle}>Resumen de compra</Text>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Productos</Text>
               <Text style={styles.summaryValue}>{items.length}</Text>
@@ -78,11 +80,11 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   emptyContainer: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   listContent: {
     padding: 14,
@@ -91,10 +93,17 @@ const styles = StyleSheet.create({
   summaryCard: {
     marginTop: 8,
     padding: 16,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
+    backgroundColor: CLUB_THEME.neutral.card,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: "#ccd7ec",
+  },
+  summaryTitle: {
+    marginBottom: 14,
+    color: CLUB_THEME.brandSecondary.royalBlue,
+    fontSize: 15,
+    fontWeight: "900",
+    textTransform: "uppercase",
   },
   summaryRow: {
     flexDirection: "row",
@@ -103,17 +112,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   summaryLabel: {
-    color: "#475569",
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 15,
     fontWeight: "600",
   },
   summaryValue: {
-    color: "#111827",
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 15,
     fontWeight: "700",
   },
   totalText: {
-    color: "#16a34a",
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 20,
     fontWeight: "900",
   },
@@ -123,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 14,
     borderRadius: 10,
-    backgroundColor: "#2563eb",
+    backgroundColor: CLUB_THEME.brandSecondary.electricBlue,
   },
   checkoutText: {
     color: "#ffffff",

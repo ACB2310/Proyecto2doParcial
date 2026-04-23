@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CLUB_THEME } from '../theme/clubTheme';
 
 const EmptyState = ({
   title = 'Sin resultados',
@@ -40,15 +41,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
     borderRadius: 36,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: CLUB_THEME.brandPrimary.softBlue,
   },
   iconText: {
-    color: '#6b7280',
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 30,
     fontWeight: '800',
   },
   title: {
-    color: '#111827',
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   message: {
     maxWidth: 300,
     marginTop: 8,
-    color: '#6b7280',
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 15,
     lineHeight: 21,
     textAlign: 'center',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 12,
     paddingHorizontal: 18,
-    backgroundColor: '#2563eb',
+    backgroundColor: CLUB_THEME.brandSecondary.electricBlue,
     borderRadius: 8,
   },
   buttonText: {

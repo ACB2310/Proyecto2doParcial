@@ -3,6 +3,7 @@ import {ActivityIndicator, Alert, FlatList, RefreshControl, StyleSheet, Text, To
 import EmptyState from "../../components/EmptyState";
 import ProductCard from "../../components/ProductCard";
 import { useCart } from "../../context/CartContext";
+import { CLUB_THEME } from "../../theme/clubTheme";
 
 const PRODUCTS_URL = "https://fakestoreapi.com/products";
 
@@ -84,6 +85,18 @@ export default function ProductListScreen({ navigation }) {
     </View>
   );
 
+  const renderHeader = () => (
+    <View style={styles.hero}>
+      <View style={styles.heroBandTop} />
+      <View style={styles.heroBandBottom} />
+      <Text style={styles.heroBadge}>Tienda Oficial</Text>
+      <Text style={styles.heroTitle}>Coleccion Destacada</Text>
+      <Text style={styles.heroSubtitle}>
+        Productos seleccionados con estilo premium para tu compra.
+      </Text>
+    </View>
+  );
+
   if (loading) {
     return (
       <View style={styles.center}>
@@ -105,21 +118,27 @@ export default function ProductListScreen({ navigation }) {
   }
 
   return (
-    <FlatList
-      data={products}
-      renderItem={renderProduct}
-      keyExtractor={(item) => String(item.id)}
-      contentContainerStyle={styles.listContent}
-      ListEmptyComponent={
-        <EmptyState
-          title="Sin productos"
+      <FlatList
+        data={products}
+        renderItem={renderProduct}
+        keyExtractor={(item) => String(item.id)}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={
+          <EmptyState
+            title="Sin productos"
           message="No hay productos disponibles por el momento."
           actionLabel="Recargar"
           onAction={() => loadProducts()}
         />
       }
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          colors={[CLUB_THEME.brandPrimary.blue, CLUB_THEME.brandPrimary.garnet]}
+          tintColor={CLUB_THEME.brandPrimary.blue}
+        />
       }
     />
   );
@@ -130,25 +149,76 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   loaderText: {
     marginTop: 10,
-    color: "#334155",
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 14,
     fontWeight: "600",
   },
   listContent: {
     padding: 14,
     paddingBottom: 20,
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
+  },
+  hero: {
+    position: "relative",
+    marginBottom: 14,
+    padding: 16,
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: CLUB_THEME.brandPrimary.blue,
+  },
+  heroBandTop: {
+    position: "absolute",
+    top: -14,
+    left: -25,
+    width: 210,
+    height: 80,
+    borderRadius: 90,
+    backgroundColor: CLUB_THEME.brandPrimary.garnet,
+    opacity: 0.8,
+  },
+  heroBandBottom: {
+    position: "absolute",
+    right: -35,
+    bottom: -28,
+    width: 230,
+    height: 90,
+    borderRadius: 90,
+    backgroundColor: CLUB_THEME.brandPrimary.gold,
+    opacity: 0.45,
+  },
+  heroBadge: {
+    alignSelf: "flex-start",
+    marginBottom: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.16)",
+    color: "#ffffff",
+    fontSize: 11,
+    fontWeight: "800",
+    textTransform: "uppercase",
+  },
+  heroTitle: {
+    color: "#ffffff",
+    fontSize: 22,
+    fontWeight: "900",
+  },
+  heroSubtitle: {
+    marginTop: 4,
+    color: "#e7eefc",
+    fontSize: 13,
+    fontWeight: "600",
   },
   cardWrapper: {
     marginBottom: 12,
   },
   cartButton: {
-    color: "#2563eb",
+    color: "#ffffff",
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "800",
   },
 });

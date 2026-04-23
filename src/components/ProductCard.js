@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
+import { CLUB_THEME } from '../theme/clubTheme';
 
 const ProductCard = ({
   name = 'Producto',
@@ -60,20 +61,20 @@ const ProductCard = ({
 const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
+    backgroundColor: CLUB_THEME.neutral.card,
+    borderRadius: 12,
+    borderWidth: 1.4,
+    borderColor: '#d0d9eb',
   },
   pressed: {
-    opacity: 0.85,
+    opacity: 0.9,
   },
   imageContainer: {
     width: '100%',
     aspectRatio: 1.25,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#eef3fb',
   },
   image: {
     width: '100%',
@@ -89,20 +90,20 @@ const styles = StyleSheet.create({
   },
   category: {
     marginBottom: 4,
-    color: '#2563eb',
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 12,
     fontWeight: '800',
     textTransform: 'uppercase',
   },
   name: {
-    color: '#111827',
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 16,
     fontWeight: '800',
     lineHeight: 20,
   },
   description: {
     marginTop: 6,
-    color: '#6b7280',
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -115,14 +116,14 @@ const styles = StyleSheet.create({
   },
   price: {
     flex: 1,
-    color: '#111827',
+    color: CLUB_THEME.brandPrimary.blue,
     fontSize: 16,
     fontWeight: '900',
   },
   button: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#16a34a',
+    backgroundColor: CLUB_THEME.brandSecondary.electricBlue,
     borderRadius: 8,
   },
   buttonText: {

@@ -7,13 +7,22 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import ProductDetailsScreen from "../Screens/Products/ProductDetailsScreen";
 import ProductListScreen from "../Screens/Products/ProductListScreen";
 import { useCart } from "../context/CartContext";
+import { CLUB_THEME } from "../theme/clubTheme";
 
 const Tab = createBottomTabNavigator();
 const ProductStack = createNativeStackNavigator();
 
 function ProductsNavigator() {
   return (
-    <ProductStack.Navigator>
+    <ProductStack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerTintColor: "#ffffff",
+        headerStyle: {
+          backgroundColor: CLUB_THEME.brandPrimary.blue,
+        },
+      }}
+    >
       <ProductStack.Screen
         name="ProductList"
         component={ProductListScreen}
@@ -35,12 +44,18 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={{
         headerTitleAlign: "center",
-        tabBarActiveTintColor: "#2563eb",
-        tabBarInactiveTintColor: "#64748b",
+        tabBarActiveTintColor: CLUB_THEME.brandPrimary.garnet,
+        tabBarInactiveTintColor: "#4f5f8f",
+        tabBarLabelStyle: {
+          fontWeight: "700",
+        },
         tabBarStyle: {
-          height: 62,
+          height: 64,
           paddingBottom: 8,
           paddingTop: 8,
+          borderTopWidth: 2,
+          borderTopColor: "#b2c5ea",
+          backgroundColor: "#eef3ff",
         },
       }}
     >

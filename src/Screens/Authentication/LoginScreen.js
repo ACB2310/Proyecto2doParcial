@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
+import { CLUB_THEME } from "../../theme/clubTheme";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -24,8 +25,11 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.background}>
+      <View style={styles.decorTop} />
+      <View style={styles.decorBottom} />
       <View style={styles.overlay}>
         <View style={styles.container}>
+          <Text style={styles.badge}>Edicion Especial</Text>
           <Text style={styles.title}>Shop App</Text>
           <Text style={styles.subtitle}>Inicia sesion para continuar</Text>
 
@@ -37,7 +41,7 @@ export default function LoginScreen({ navigation }) {
 
           <TextInput
             placeholder="Correo electronico"
-            placeholderTextColor="#ccc"
+            placeholderTextColor="#6f7fae"
             style={styles.input}
             value={email}
             onChangeText={setEmail}
@@ -47,7 +51,7 @@ export default function LoginScreen({ navigation }) {
 
           <TextInput
             placeholder="Contrasena"
-            placeholderTextColor="#ccc"
+            placeholderTextColor="#6f7fae"
             style={styles.input}
             secureTextEntry
             value={password}
@@ -75,28 +79,62 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#111827",
+    backgroundColor: CLUB_THEME.brandSecondary.royalBlue,
+  },
+  decorTop: {
+    position: "absolute",
+    top: -120,
+    right: -80,
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: CLUB_THEME.brandSecondary.red,
+    opacity: 0.25,
+  },
+  decorBottom: {
+    position: "absolute",
+    bottom: -130,
+    left: -90,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: CLUB_THEME.brandSecondary.white,
+    opacity: 0.13,
   },
   overlay: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#111827",
+    backgroundColor: "transparent",
   },
   container: {
     marginHorizontal: 30,
-    padding: 24,
-    backgroundColor: "rgba(0,0,0,0.68)",
-    borderRadius: 18,
+    padding: 22,
+    backgroundColor: CLUB_THEME.brandSecondary.white,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: CLUB_THEME.brandSecondary.electricBlue,
+  },
+  badge: {
+    alignSelf: "center",
+    marginBottom: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: CLUB_THEME.brandSecondary.red,
+    color: CLUB_THEME.brandSecondary.white,
+    fontSize: 11,
+    fontWeight: "800",
+    textTransform: "uppercase",
   },
   title: {
-    fontSize: 30,
-    color: "white",
+    fontSize: 32,
+    color: CLUB_THEME.brandSecondary.royalBlue,
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "900",
   },
   subtitle: {
     fontSize: 14,
-    color: "#ddd",
+    color: "#4c5c85",
     textAlign: "center",
     marginTop: 6,
     marginBottom: 20,
@@ -108,24 +146,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    backgroundColor: "rgba(255,255,255,0.15)",
-    color: "white",
+    backgroundColor: CLUB_THEME.brandSecondary.softBlue,
+    color: CLUB_THEME.neutral.textPrimary,
     padding: 14,
     marginBottom: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.15)",
+    borderColor: "#b7c8ee",
   },
   button: {
-    backgroundColor: "#e63946",
+    backgroundColor: CLUB_THEME.brandSecondary.electricBlue,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     marginTop: 5,
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
+    color: CLUB_THEME.brandSecondary.white,
+    fontWeight: "800",
     fontSize: 16,
   },
   secondaryButton: {
@@ -133,7 +171,8 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     textAlign: "center",
-    color: "#f1faee",
+    color: CLUB_THEME.brandSecondary.royalBlue,
     fontSize: 14,
+    fontWeight: "700",
   },
 });

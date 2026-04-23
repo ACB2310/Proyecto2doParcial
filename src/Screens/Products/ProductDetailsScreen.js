@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import {ActivityIndicator, Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import EmptyState from "../../components/EmptyState";
 import { useCart } from "../../context/CartContext";
+import { CLUB_THEME } from "../../theme/clubTheme";
 
 const PRODUCTS_URL = "https://fakestoreapi.com/products";
 
@@ -105,7 +106,12 @@ export default function ProductDetailsScreen({ navigation, route }) {
       style={styles.screen}
       contentContainerStyle={styles.content}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          colors={[CLUB_THEME.brandPrimary.blue, CLUB_THEME.brandPrimary.garnet]}
+          tintColor={CLUB_THEME.brandPrimary.blue}
+        />
       }
     >
       <View style={styles.imageContainer}>
@@ -143,7 +149,7 @@ export default function ProductDetailsScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   content: {
     padding: 18,
@@ -153,11 +159,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f8fafc",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   loaderText: {
     marginTop: 10,
-    color: "#334155",
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 14,
     fontWeight: "600",
   },
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: CLUB_THEME.neutral.border,
     backgroundColor: "#ffffff",
   },
   image: {
@@ -181,23 +187,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 16,
-    backgroundColor: "#dbeafe",
+    backgroundColor: CLUB_THEME.brandPrimary.softBlue,
   },
   categoryText: {
-    color: "#1d4ed8",
+    color: CLUB_THEME.brandPrimary.blue,
     fontSize: 12,
     fontWeight: "700",
     textTransform: "capitalize",
   },
   title: {
-    color: "#0f172a",
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 24,
     fontWeight: "800",
     lineHeight: 30,
   },
   price: {
     marginTop: 8,
-    color: "#16a34a",
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 22,
     fontWeight: "900",
   },
@@ -207,7 +213,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   ratingText: {
-    color: "#334155",
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -220,12 +226,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginTop: 18,
     marginBottom: 6,
-    color: "#0f172a",
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 16,
     fontWeight: "800",
   },
   description: {
-    color: "#334155",
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 15,
     lineHeight: 22,
   },
@@ -235,7 +241,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 14,
     borderRadius: 10,
-    backgroundColor: "#2563eb",
+    backgroundColor: CLUB_THEME.brandPrimary.garnet,
   },
   buttonText: {
     color: "#ffffff",
@@ -243,8 +249,8 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   cartButton: {
-    color: "#2563eb",
+    color: "#ffffff",
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "800",
   },
 });

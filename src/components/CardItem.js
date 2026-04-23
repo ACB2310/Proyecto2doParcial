@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
+import { CLUB_THEME } from '../theme/clubTheme';
 
 const CardItem = ({
   title = 'Producto',
@@ -71,10 +72,10 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 12,
     marginBottom: 12,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
+    backgroundColor: CLUB_THEME.neutral.card,
+    borderRadius: 12,
+    borderWidth: 1.4,
+    borderColor: '#d6dfef',
   },
   pressed: {
     opacity: 0.8,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: CLUB_THEME.brandPrimary.softBlue,
     borderRadius: 8,
   },
   image: {
@@ -111,13 +112,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: '#111827',
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 16,
     fontWeight: '700',
   },
   subtitle: {
     marginTop: 4,
-    color: '#6b7280',
+    color: CLUB_THEME.neutral.textSecondary,
     fontSize: 13,
   },
   removeButton: {
@@ -126,10 +127,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 14,
-    backgroundColor: '#fee2e2',
+    backgroundColor: '#ffe8ea',
   },
   removeText: {
-    color: '#b91c1c',
+    color: CLUB_THEME.brandSecondary.red,
     fontSize: 12,
     fontWeight: '800',
   },
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   price: {
-    color: '#111827',
+    color: CLUB_THEME.brandPrimary.blue,
     fontSize: 16,
     fontWeight: '800',
   },
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#d1d5db',
+    borderColor: '#c6d4ef',
     borderRadius: 8,
   },
   quantityButton: {
@@ -158,14 +159,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quantityButtonText: {
-    color: '#111827',
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 18,
     fontWeight: '800',
   },
   quantity: {
     minWidth: 28,
     textAlign: 'center',
-    color: '#111827',
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 14,
     fontWeight: '700',
   },
