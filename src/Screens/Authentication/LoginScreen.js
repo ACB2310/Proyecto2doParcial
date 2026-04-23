@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const USERS = [
   { id: "1", name: "Alan Castillo", email: "alan@gmail.com", password: "1234" },
@@ -12,7 +12,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert("Campos incompletos", "Ingresa tu correo y contraseña");
+      Alert.alert("Campos incompletos", "Ingresa tu correo y contrasena");
       return;
     }
 
@@ -23,36 +23,29 @@ export default function LoginScreen({ navigation }) {
     );
 
     if (!userFound) {
-      Alert.alert("Error", "Correo o contraseña incorrectos");
+      Alert.alert("Error", "Correo o contrasena incorrectos");
       return;
     }
 
     Alert.alert("Bienvenido", `Hola, ${userFound.name}`);
-
-    navigation.replace("MainTabs", {
-      user: userFound,
-    });
+    navigation.replace("ProductList", { user: userFound });
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/background_login.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
+    <View style={styles.background}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Shop App</Text>
-          <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
+          <Text style={styles.subtitle}>Inicia sesion para continuar</Text>
 
           <Image
-            source={require("../assets/ars_pizzas_logo.png")}
+            source={require("../../../assets/icon.png")}
             style={styles.logo}
             resizeMode="contain"
           />
 
           <TextInput
-            placeholder="Correo electrónico"
+            placeholder="Correo electronico"
             placeholderTextColor="#ccc"
             style={styles.input}
             value={email}
@@ -62,7 +55,7 @@ export default function LoginScreen({ navigation }) {
           />
 
           <TextInput
-            placeholder="Contraseña"
+            placeholder="Contrasena"
             placeholderTextColor="#ccc"
             style={styles.input}
             secureTextEntry
@@ -79,23 +72,24 @@ export default function LoginScreen({ navigation }) {
             onPress={() => navigation.navigate("Register")}
           >
             <Text style={styles.secondaryButtonText}>
-              ¿No tienes cuenta? Regístrate
+              No tienes cuenta? Registrate
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    backgroundColor: "#111827",
   },
   overlay: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "#111827",
   },
   container: {
     marginHorizontal: 30,

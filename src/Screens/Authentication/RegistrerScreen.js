@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const USERS = [
   { id: "1", name: "Alan Castillo", email: "alan@gmail.com", password: "1234" },
-  { id: "2", name: "Rodrigo Pérez", email: "rodrigo@gmail.com", password: "5678" },
+  { id: "2", name: "Rodrigo Perez", email: "rodrigo@gmail.com", password: "5678" },
 ];
 
 export default function RegisterScreen({ navigation }) {
@@ -23,17 +23,17 @@ export default function RegisterScreen({ navigation }) {
     );
 
     if (emailExists) {
-      Alert.alert("Correo ya registrado", "Ese correo ya está en uso");
+      Alert.alert("Correo ya registrado", "Ese correo ya esta en uso");
       return;
     }
 
     if (password.length < 4) {
-      Alert.alert("Contraseña inválida", "La contraseña debe tener al menos 4 caracteres");
+      Alert.alert("Contrasena invalida", "La contrasena debe tener al menos 4 caracteres");
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Las contraseñas no coinciden");
+      Alert.alert("Error", "Las contrasenas no coinciden");
       return;
     }
 
@@ -64,18 +64,14 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/background_login.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
+    <View style={styles.background}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Crear cuenta</Text>
-          <Text style={styles.subtitle}>Regístrate para comenzar a comprar</Text>
+          <Text style={styles.subtitle}>Registrate para comenzar a comprar</Text>
 
           <Image
-            source={require("../assets/ars_pizzas_logo.png")}
+            source={require("../../../assets/icon.png")}
             style={styles.logo}
             resizeMode="contain"
           />
@@ -89,7 +85,7 @@ export default function RegisterScreen({ navigation }) {
           />
 
           <TextInput
-            placeholder="Correo electrónico"
+            placeholder="Correo electronico"
             placeholderTextColor="#ccc"
             style={styles.input}
             value={email}
@@ -99,7 +95,7 @@ export default function RegisterScreen({ navigation }) {
           />
 
           <TextInput
-            placeholder="Contraseña"
+            placeholder="Contrasena"
             placeholderTextColor="#ccc"
             style={styles.input}
             secureTextEntry
@@ -108,7 +104,7 @@ export default function RegisterScreen({ navigation }) {
           />
 
           <TextInput
-            placeholder="Confirmar contraseña"
+            placeholder="Confirmar contrasena"
             placeholderTextColor="#ccc"
             style={styles.input}
             secureTextEntry
@@ -125,23 +121,24 @@ export default function RegisterScreen({ navigation }) {
             onPress={() => navigation.goBack()}
           >
             <Text style={styles.secondaryButtonText}>
-              ¿Ya tienes cuenta? Inicia sesión
+              Ya tienes cuenta? Inicia sesion
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    backgroundColor: "#111827",
   },
   overlay: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "#111827",
   },
   container: {
     marginHorizontal: 30,
