@@ -60,7 +60,7 @@ export default function RegisterScreen({ navigation }) {
           <Text style={styles.subtitle}>Registrate para comenzar a comprar</Text>
 
           <Image
-            source={require("../../../assets/icon.png")}
+            source={require("../../images/Icono.png")}
             style={styles.logo}
             resizeMode="contain"
           />

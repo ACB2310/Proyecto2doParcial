@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import EmptyState from "../components/EmptyState";
 import { useAuth } from "../context/AuthContext";
@@ -32,6 +32,11 @@ export default function ProfileScreen() {
     <View style={styles.screen}>
       <View style={styles.card}>
         <Text style={styles.badge}>Cuenta activa</Text>
+        <Image
+          source={require("../images/Icono.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <Text style={styles.sectionTitle}>Usuario actual</Text>
 
         <View style={styles.row}>
@@ -78,10 +83,17 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   sectionTitle: {
+    alignSelf: "center",
     marginBottom: 16,
     color: CLUB_THEME.brandSecondary.royalBlue,
     fontSize: 18,
     fontWeight: "800",
+  },
+  logo: {
+    width: 96,
+    height: 96,
+    alignSelf: "center",
+    marginBottom: 12,
   },
   row: {
     marginBottom: 14,

@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.subtitle}>Inicia sesion para continuar</Text>
 
           <Image
-            source={require("../../../assets/icon.png")}
+            source={require("../../images/Icono.png")}
             style={styles.logo}
             resizeMode="contain"
           />
