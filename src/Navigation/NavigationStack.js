@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "../Screens/Authentication/LoginScreen";
 import RegisterScreen from "../Screens/Authentication/RegistrerScreen";
+import CartScreen from "../Screens/CartScreen";
 import ProductDetailsScreen from "../Screens/Products/ProductDetailsScreen";
 import ProductListScreen from "../Screens/Products/ProductListScreen";
 
@@ -32,6 +33,11 @@ export default function NavigationStack() {
           name="ProductDetails"
           component={ProductDetailsScreen}
           options={{ title: "Detalle del producto" }}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{ title: "Carrito" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

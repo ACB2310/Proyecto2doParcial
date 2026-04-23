@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {ActivityIndicator, Alert, FlatList, RefreshControl, StyleSheet, Text, View,} from "react-native";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import {ActivityIndicator, Alert, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import EmptyState from "../../components/EmptyState";
 import ProductCard from "../../components/ProductCard";
+import { useCart } from "../../context/CartContext";
 
 const PRODUCTS_URL = "https://fakestoreapi.com/products";
 
@@ -16,6 +17,7 @@ export default function ProductListScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { addToCart, cartCount } = useCart();
 
   const loadProducts = useCallback(async (showLoader = true) => {
     try {
@@ -45,6 +47,16 @@ export default function ProductListScreen({ navigation }) {
     loadProducts();
   }, [loadProducts]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+          <Text style={styles.cartButton}>Carrito ({cartCount})</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [cartCount, navigation]);
+
   const handleRefresh = async () => {
     setRefreshing(true);
     await loadProducts(false);
@@ -64,9 +76,10 @@ export default function ProductListScreen({ navigation }) {
         image={item.image}
         category={item.category}
         onPress={() => handlePressProduct(item)}
-        onAddToCart={() =>
-          Alert.alert("Info", "Flujo de carrito pendiente de integrar.")
-        }
+        onAddToCart={() => {
+          addToCart(item);
+          Alert.alert("Carrito", "Producto agregado al carrito.");
+        }}
       />
     </View>
   );
@@ -132,5 +145,10 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     marginBottom: 12,
+  },
+  cartButton: {
+    color: "#2563eb",
+    fontSize: 14,
+    fontWeight: "700",
   },
 });

@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import {ActivityIndicator, Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import EmptyState from "../../components/EmptyState";
+import { useCart } from "../../context/CartContext";
 
 const PRODUCTS_URL = "https://fakestoreapi.com/products";
 
@@ -10,11 +11,12 @@ const formatPrice = (value) => {
   return `$${numericValue.toFixed(2)} USD`;
 };
 
-export default function ProductDetailsScreen({ route }) {
+export default function ProductDetailsScreen({ navigation, route }) {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { addToCart, cartCount } = useCart();
   const productId = Number(route?.params?.productId ?? route?.params?.id);
 
   const loadProduct = useCallback(
@@ -50,6 +52,16 @@ export default function ProductDetailsScreen({ route }) {
   useEffect(() => {
     loadProduct();
   }, [loadProduct]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+          <Text style={styles.cartButton}>Carrito ({cartCount})</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [cartCount, navigation]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -117,7 +129,10 @@ export default function ProductDetailsScreen({ route }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => Alert.alert("Info", "El flujo de carrito se conectara despues.")}
+        onPress={() => {
+          addToCart(product);
+          Alert.alert("Carrito", "Producto agregado al carrito.");
+        }}
       >
         <Text style={styles.buttonText}>Agregar al carrito</Text>
       </TouchableOpacity>
@@ -226,5 +241,10 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 15,
     fontWeight: "800",
+  },
+  cartButton: {
+    color: "#2563eb",
+    fontSize: 14,
+    fontWeight: "700",
   },
 });
