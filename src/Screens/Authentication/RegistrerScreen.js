@@ -1,29 +1,17 @@
 import React, { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-
-const USERS = [
-  { id: "1", name: "Alan Castillo", email: "alan@gmail.com", password: "1234" },
-  { id: "2", name: "Rodrigo Perez", email: "rodrigo@gmail.com", password: "5678" },
-];
+import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { register } = useAuth();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       Alert.alert("Campos incompletos", "Completa todos los campos");
-      return;
-    }
-
-    const emailExists = USERS.some(
-      (user) => user.email.toLowerCase() === email.trim().toLowerCase()
-    );
-
-    if (emailExists) {
-      Alert.alert("Correo ya registrado", "Ese correo ya esta en uso");
       return;
     }
 
@@ -37,18 +25,15 @@ export default function RegisterScreen({ navigation }) {
       return;
     }
 
-    const newUser = {
-      id: Date.now().toString(),
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      password,
-    };
-
-    USERS.push(newUser);
+    const result = await register({ name, email, password });
+    if (!result.ok) {
+      Alert.alert("Correo ya registrado", result.message);
+      return;
+    }
 
     Alert.alert(
       "Registro exitoso",
-      `Usuario ${newUser.name} registrado correctamente`,
+      `Usuario ${result.user.name} registrado correctamente`,
       [
         {
           text: "Ir al login",

@@ -50,7 +50,7 @@ export default function ProductListScreen({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+        <TouchableOpacity onPress={() => navigation.getParent()?.navigate("CartTab")}>
           <Text style={styles.cartButton}>Carrito ({cartCount})</Text>
         </TouchableOpacity>
       ),

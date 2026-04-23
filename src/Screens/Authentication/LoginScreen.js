@@ -1,34 +1,25 @@
 import React, { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-
-const USERS = [
-  { id: "1", name: "Alan Castillo", email: "alan@gmail.com", password: "1234" },
-  { id: "2", name: "Rodrigo Hernandez", email: "rodrigo@gmail.com", password: "5678" },
-];
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert("Campos incompletos", "Ingresa tu correo y contrasena");
       return;
     }
 
-    const userFound = USERS.find(
-      (user) =>
-        user.email.toLowerCase() === email.trim().toLowerCase() &&
-        user.password === password
-    );
-
-    if (!userFound) {
-      Alert.alert("Error", "Correo o contrasena incorrectos");
+    const result = await login({ email, password });
+    if (!result.ok) {
+      Alert.alert("Error", result.message);
       return;
     }
 
-    Alert.alert("Bienvenido", `Hola, ${userFound.name}`);
-    navigation.replace("ProductList", { user: userFound });
+    Alert.alert("Bienvenido", `Hola, ${result.user.name}`);
   };
 
   return (

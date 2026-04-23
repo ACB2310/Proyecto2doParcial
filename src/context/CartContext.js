@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const CartContext = createContext(null);
+const CART_STORAGE_KEY = "@shop_app_cart";
 
 const normalizeProduct = (product) => ({
   id: product.id,
@@ -12,6 +14,32 @@ const normalizeProduct = (product) => ({
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const storedItems = await AsyncStorage.getItem(CART_STORAGE_KEY);
+        if (storedItems) {
+          setItems(JSON.parse(storedItems));
+        }
+      } catch (error) {
+        setItems([]);
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+
+    AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }, [isReady, items]);
 
   const addToCart = (product) => {
     const normalizedProduct = normalizeProduct(product);
@@ -76,8 +104,9 @@ export function CartProvider({ children }) {
       clearCart,
       cartCount,
       cartTotal,
+      isReady,
     }),
-    [items, cartCount, cartTotal]
+    [items, cartCount, cartTotal, isReady]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
