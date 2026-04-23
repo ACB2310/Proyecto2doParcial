@@ -34,7 +34,7 @@ export default function ProductListScreen({ navigation }) {
 
       setProducts(data);
     } catch (error) {
-      setErrorMessage(error.message || "Error Desconocido al obtener productos.");
+      setErrorMessage(error.message || "Error desconocido al obtener productos.");
       setProducts([]);
     } finally {
       setLoading(false);
