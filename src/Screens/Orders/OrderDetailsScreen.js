@@ -1,108 +1,143 @@
 import React from "react";
-import { FlatList, Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function OrderDetailScreen({ route }) {
-  const { order } = route.params;
+import EmptyState from "../../components/EmptyState";
+import { useOrders } from "../../context/OrdersContext";
+import { CLUB_THEME } from "../../theme/clubTheme";
+
+const formatPrice = (value) => `$${Number(value || 0).toFixed(2)} USD`;
+const formatDate = (value) =>
+  new Date(value).toLocaleString("es-MX", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
+export default function OrderDetailsScreen({ navigation, route }) {
+  const { orderId } = route.params;
+  const { orders, deleteOrder } = useOrders();
+
+  const order = orders.find((item) => item.id === orderId);
+
+  const handleDeleteOrder = () => {
+    Alert.alert("Eliminar pedido", "Deseas borrar este pedido del historial?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Eliminar",
+        style: "destructive",
+        onPress: () => {
+          deleteOrder(orderId);
+          navigation.goBack();
+        },
+      },
+    ]);
+  };
+
+  if (!order) {
+    return (
+      <EmptyState
+        title="Pedido no encontrado"
+        message="No pudimos encontrar la compra solicitada."
+      />
+    );
+  }
 
   const renderItem = ({ item }) => (
     <View style={styles.productCard}>
-      <Image
-        source={{ uri: item.image }}
-        style={styles.productImage}
-        resizeMode="contain"
-      />
+      <Image source={{ uri: item.image }} style={styles.productImage} resizeMode="contain" />
 
       <View style={styles.productInfo}>
         <Text style={styles.productTitle}>{item.title}</Text>
-        <Text style={styles.productSeller}>Vendido por: {item.seller}</Text>
-        <Text style={styles.productText}>Precio: ${item.price}</Text>
+        <Text style={styles.productText}>Categoria: {item.category || "General"}</Text>
+        <Text style={styles.productText}>Precio: {formatPrice(item.price)}</Text>
         <Text style={styles.productText}>Cantidad: {item.quantity}</Text>
         <Text style={styles.subtotal}>
-          Subtotal: ${item.price * item.quantity}
+          Subtotal: {formatPrice(item.price * item.quantity)}
         </Text>
       </View>
     </View>
   );
 
   return (
-    <ImageBackground
-      source={require("../assets/background_login.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <FlatList
-          data={order.items}
-          keyExtractor={(item, index) =>
-            `${item.productId}-${index}`
-          }
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <View style={styles.headerCard}>
-              <Text style={styles.title}>Detalle del Pedido</Text>
-              <Text style={styles.info}>Pedido #{order.id}</Text>
-              <Text style={styles.info}>Fecha: {order.createdAt}</Text>
-              <Text style={styles.info}>
-                Productos: {order.items.length}
-              </Text>
-              <Text style={styles.total}>Total pagado: ${order.total}</Text>
-            </View>
-          }
-          contentContainerStyle={styles.listContent}
-        />
-      </View>
-    </ImageBackground>
+    <View style={styles.screen}>
+      <FlatList
+        data={order.items}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={
+          <View style={styles.headerCard}>
+            <Text style={styles.title}>Pedido {order.id}</Text>
+            <Text style={styles.info}>Fecha: {formatDate(order.createdAt)}</Text>
+            <Text style={styles.info}>Articulos: {order.items.length}</Text>
+            <Text style={styles.total}>Total pagado: {formatPrice(order.total)}</Text>
+
+            <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteOrder}>
+              <Text style={styles.deleteButtonText}>Eliminar pedido</Text>
+            </TouchableOpacity>
+          </View>
+        }
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  screen: {
     flex: 1,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.25)",
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   listContent: {
-    padding: 20,
-    paddingTop: 50,
-    paddingBottom: 30,
+    padding: 16,
+    paddingBottom: 24,
   },
   headerCard: {
-    backgroundColor: "rgba(0,0,0,0.7)",
+    marginBottom: 16,
+    padding: 18,
+    backgroundColor: CLUB_THEME.brandPrimary.blue,
     borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
   },
   title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 12,
+    color: "#ffffff",
+    fontSize: 22,
+    fontWeight: "900",
   },
   info: {
-    fontSize: 15,
-    color: "#f1f1f1",
-    marginBottom: 6,
+    marginTop: 8,
+    color: "#dbeafe",
+    fontSize: 14,
+    fontWeight: "600",
   },
   total: {
-    fontSize: 18,
-    color: "#e63946",
-    fontWeight: "bold",
     marginTop: 10,
+    color: CLUB_THEME.brandPrimary.gold,
+    fontSize: 18,
+    fontWeight: "900",
+  },
+  deleteButton: {
+    alignSelf: "flex-start",
+    marginTop: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    backgroundColor: "#fee2e2",
+  },
+  deleteButtonText: {
+    color: "#b91c1c",
+    fontSize: 13,
+    fontWeight: "800",
   },
   productCard: {
     flexDirection: "row",
-    backgroundColor: "white",
+    marginBottom: 12,
+    padding: 14,
+    backgroundColor: CLUB_THEME.neutral.card,
     borderRadius: 14,
-    padding: 12,
-    marginBottom: 14,
-    elevation: 3,
+    borderWidth: 1.5,
+    borderColor: CLUB_THEME.neutral.border,
   },
   productImage: {
-    width: 90,
-    height: 90,
+    width: 82,
+    height: 82,
     marginRight: 12,
   },
   productInfo: {
@@ -110,25 +145,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   productTitle: {
+    color: CLUB_THEME.neutral.textPrimary,
     fontSize: 15,
-    fontWeight: "bold",
-    color: "#222",
-    marginBottom: 4,
-  },
-  productSeller: {
-    fontSize: 13,
-    color: "#666",
-    marginBottom: 4,
+    fontWeight: "800",
   },
   productText: {
-    fontSize: 14,
-    color: "#444",
-    marginBottom: 2,
+    marginTop: 4,
+    color: CLUB_THEME.neutral.textSecondary,
+    fontSize: 13,
+    fontWeight: "600",
   },
   subtotal: {
+    marginTop: 8,
+    color: CLUB_THEME.brandPrimary.garnet,
     fontSize: 15,
-    fontWeight: "bold",
-    color: "#e63946",
-    marginTop: 6,
+    fontWeight: "900",
   },
 });

@@ -18,6 +18,7 @@ export default function ProductDetailsScreen({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { addToCart, cartCount } = useCart();
+  const routeProduct = route?.params?.product;
   const productId = Number(route?.params?.productId ?? route?.params?.id);
 
   const loadProduct = useCallback(
@@ -25,6 +26,11 @@ export default function ProductDetailsScreen({ navigation, route }) {
       try {
         if (showLoader) setLoading(true);
         setErrorMessage("");
+
+        if (routeProduct) {
+          setProduct(routeProduct);
+          return;
+        }
 
         const endpoint = Number.isFinite(productId)
           ? `${PRODUCTS_URL}/${productId}`

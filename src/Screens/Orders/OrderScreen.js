@@ -1,107 +1,155 @@
 import React from "react";
-import { FlatList, ImageBackground, StyleSheet, Text, View} from "react-native";
-import OrderCard from "../components/order/OrderCard";
-import EmptyState from "../components/common/EmptyState";
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const MOCK_ORDERS = [
-  {
-    id: "1001",
-    userId: "1",
-    createdAt: "2026-04-23 18:30",
-    total: 1798,
-    items: [
-      {
-        productId: 1,
-        title: "Tenis deportivos",
-        price: 899,
-        quantity: 2,
-        image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-        seller: "Sport Shop",
-      },
-    ],
-  },
-  {
-    id: "1002",
-    userId: "1",
-    createdAt: "2026-04-22 16:10",
-    total: 1249,
-    items: [
-      {
-        productId: 2,
-        title: "Sudadera casual",
-        price: 1249,
-        quantity: 1,
-        image: "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
-        seller: "Urban Style",
-      },
-    ],
-  },
-];
+import EmptyState from "../../components/EmptyState";
+import { useAuth } from "../../context/AuthContext";
+import { useOrders } from "../../context/OrdersContext";
+import { CLUB_THEME } from "../../theme/clubTheme";
 
-export default function OrdersScreen({ navigation }) {
-  const orders = MOCK_ORDERS;
+const formatPrice = (value) => `$${Number(value || 0).toFixed(2)} USD`;
+const formatDate = (value) =>
+  new Date(value).toLocaleString("es-MX", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
+export default function OrderScreen({ navigation }) {
+  const { currentUser } = useAuth();
+  const { getOrdersByUser, deleteOrder } = useOrders();
+
+  const orders = currentUser ? getOrdersByUser(currentUser.id) : [];
+
+  const handleDeleteOrder = (orderId) => {
+    Alert.alert("Eliminar pedido", "Deseas borrar este pedido del historial?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Eliminar",
+        style: "destructive",
+        onPress: () => deleteOrder(orderId),
+      },
+    ]);
+  };
 
   const renderOrder = ({ item }) => (
-    <OrderCard
-      order={item}
-      onPress={() => navigation.navigate("OrderDetail", { order: item })}
-    />
+    <View style={styles.card}>
+      <View style={styles.row}>
+        <Text style={styles.orderId}>{item.id}</Text>
+        <Text style={styles.total}>{formatPrice(item.total)}</Text>
+      </View>
+
+      <Text style={styles.meta}>{formatDate(item.createdAt)}</Text>
+      <Text style={styles.meta}>Productos: {item.items.length}</Text>
+
+      <View style={styles.actions}>
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate("OrderDetails", { orderId: item.id })}
+        >
+          <Text style={styles.secondaryButtonText}>Ver detalle</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDeleteOrder(item.id)}
+        >
+          <Text style={styles.deleteButtonText}>Eliminar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 
-  return (
-    <ImageBackground
-      source={require("../assets/background_login.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Mis Pedidos</Text>
-          <Text style={styles.subtitle}>Consulta tu historial de compras</Text>
-
-          {orders.length === 0 ? (
-            <EmptyState message="Aún no has realizado ningún pedido." />
-          ) : (
-            <FlatList
-              data={orders}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={renderOrder}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.listContent}
-            />
-          )}
-        </View>
+  if (!orders.length) {
+    return (
+      <View style={styles.emptyContainer}>
+        <EmptyState
+          title="Sin compras registradas"
+          message="Cuando finalices una compra, tu historial aparecera aqui."
+        />
       </View>
-    </ImageBackground>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <FlatList
+        data={orders}
+        keyExtractor={(item) => item.id}
+        renderItem={renderOrder}
+        contentContainerStyle={styles.listContent}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  screen: {
     flex: 1,
+    backgroundColor: CLUB_THEME.neutral.page,
   },
-  overlay: {
+  emptyContainer: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.25)",
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 6,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#f1f1f1",
-    marginBottom: 20,
+    backgroundColor: CLUB_THEME.neutral.page,
   },
   listContent: {
-    paddingBottom: 20,
+    padding: 14,
+  },
+  card: {
+    marginBottom: 12,
+    padding: 16,
+    backgroundColor: CLUB_THEME.neutral.card,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: CLUB_THEME.neutral.border,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  orderId: {
+    flex: 1,
+    color: CLUB_THEME.brandSecondary.royalBlue,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  total: {
+    color: CLUB_THEME.brandPrimary.garnet,
+    fontSize: 16,
+    fontWeight: "900",
+  },
+  meta: {
+    marginTop: 6,
+    color: CLUB_THEME.neutral.textSecondary,
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 10,
+    marginTop: 12,
+  },
+  secondaryButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    backgroundColor: CLUB_THEME.brandSecondary.softBlue,
+  },
+  secondaryButtonText: {
+    color: CLUB_THEME.brandPrimary.blue,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  deleteButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    backgroundColor: "#fee2e2",
+  },
+  deleteButtonText: {
+    color: "#b91c1c",
+    fontSize: 13,
+    fontWeight: "800",
   },
 });

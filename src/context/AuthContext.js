@@ -84,6 +84,43 @@ export function AuthProvider({ children }) {
     return { ok: true, user: newUser };
   };
 
+  const updateUser = async ({ userId, name, email, password }) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const emailExists = users.some(
+      (user) =>
+        user.id !== userId && user.email.toLowerCase() === normalizedEmail
+    );
+
+    if (emailExists) {
+      return { ok: false, message: "Ese correo ya esta en uso" };
+    }
+
+    const updatedUsers = users.map((user) =>
+      user.id === userId
+        ? {
+            ...user,
+            name: name.trim(),
+            email: normalizedEmail,
+            password: password?.trim() ? password : user.password,
+          }
+        : user
+    );
+
+    const updatedUser = updatedUsers.find((user) => user.id === userId) ?? null;
+
+    setUsers(updatedUsers);
+    setCurrentUser(updatedUser);
+
+    await AsyncStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updatedUsers));
+
+    if (updatedUser) {
+      await AsyncStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(updatedUser));
+    }
+
+    return { ok: true, user: updatedUser };
+  };
+
   const logout = async () => {
     setCurrentUser(null);
     await AsyncStorage.removeItem(SESSION_STORAGE_KEY);
@@ -96,6 +133,7 @@ export function AuthProvider({ children }) {
       isReady,
       login,
       register,
+      updateUser,
       logout,
     }),
     [users, currentUser, isReady]

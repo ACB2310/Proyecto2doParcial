@@ -47,6 +47,12 @@ export function OrdersProvider({ children }) {
     return newOrder;
   };
 
+  const deleteOrder = (orderId) => {
+    setOrders((currentOrders) =>
+      currentOrders.filter((order) => order.id !== orderId)
+    );
+  };
+
   const getOrdersByUser = (userId) =>
     orders.filter((order) => order.userId === userId);
 
@@ -55,6 +61,7 @@ export function OrdersProvider({ children }) {
       orders,
       isReady,
       createOrder,
+      deleteOrder,
       getOrdersByUser,
     }),
     [orders, isReady]

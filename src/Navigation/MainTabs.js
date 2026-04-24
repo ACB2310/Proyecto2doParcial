@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 
 import CartScreen from "../Screens/CartScreen";
+import OrderDetailsScreen from "../Screens/Orders/OrderDetailsScreen";
+import OrderScreen from "../Screens/Orders/OrderScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import ProductDetailsScreen from "../Screens/Products/ProductDetailsScreen";
 import ProductListScreen from "../Screens/Products/ProductListScreen";
@@ -12,6 +14,7 @@ import { CLUB_THEME } from "../theme/clubTheme";
 
 const Tab = createBottomTabNavigator();
 const ProductStack = createNativeStackNavigator();
+const OrdersStack = createNativeStackNavigator();
 
 function ProductsNavigator() {
   return (
@@ -35,6 +38,31 @@ function ProductsNavigator() {
         options={{ title: "Detalle del producto" }}
       />
     </ProductStack.Navigator>
+  );
+}
+
+function OrdersNavigator() {
+  return (
+    <OrdersStack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerTintColor: "#ffffff",
+        headerStyle: {
+          backgroundColor: CLUB_THEME.brandPrimary.blue,
+        },
+      }}
+    >
+      <OrdersStack.Screen
+        name="OrdersList"
+        component={OrderScreen}
+        options={{ title: "Historial" }}
+      />
+      <OrdersStack.Screen
+        name="OrderDetails"
+        component={OrderDetailsScreen}
+        options={{ title: "Detalle del pedido" }}
+      />
+    </OrdersStack.Navigator>
   );
 }
 
@@ -86,6 +114,22 @@ export default function MainTabs() {
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
               name={focused ? "cart" : "cart-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="OrdersTab"
+        component={OrdersNavigator}
+        options={{
+          title: "Pedidos",
+          headerShown: false,
+          tabBarLabel: "Pedidos",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "receipt" : "receipt-outline"}
               size={size}
               color={color}
             />

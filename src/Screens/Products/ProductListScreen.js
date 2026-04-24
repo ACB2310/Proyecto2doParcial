@@ -6,6 +6,56 @@ import { useCart } from "../../context/CartContext";
 import { CLUB_THEME } from "../../theme/clubTheme";
 
 const PRODUCTS_URL = "https://fakestoreapi.com/products";
+const LOCAL_PRODUCTS = [
+  {
+    id: "local-1",
+    title: "Jersey Local Edicion Clasica",
+    price: 129,
+    description:
+      "Jersey inspirado en una temporada historica, con tela ligera y acabado premium para uso casual o deportivo.",
+    category: "coleccion local",
+    image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=80",
+    rating: { rate: 4.8, count: 24 },
+    seller: "Tienda Universitaria",
+    isLocal: true,
+  },
+  {
+    id: "local-2",
+    title: "Sudadera Azul Premium",
+    price: 89,
+    description:
+      "Sudadera comoda con interior suave, ideal para clima fresco y para combinar con prendas deportivas.",
+    category: "coleccion local",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
+    rating: { rate: 4.6, count: 18 },
+    seller: "Campus Shop",
+    isLocal: true,
+  },
+  {
+    id: "local-3",
+    title: "Termo Deportivo Oficial",
+    price: 35,
+    description:
+      "Termo de acero inoxidable con aislamiento termico, perfecto para entrenamientos, clases o trayectos diarios.",
+    category: "accesorios",
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=80",
+    rating: { rate: 4.7, count: 31 },
+    seller: "Club Store",
+    isLocal: true,
+  },
+  {
+    id: "local-4",
+    title: "Mochila Urbana Oficial",
+    price: 75,
+    description:
+      "Mochila amplia con compartimento acolchado y diseno moderno para uso diario dentro y fuera del campus.",
+    category: "accesorios",
+    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80",
+    rating: { rate: 4.9, count: 12 },
+    seller: "Linea Exclusiva",
+    isLocal: true,
+  },
+];
 
 const formatPrice = (value) => {
   const numericValue = Number(value);
@@ -35,10 +85,10 @@ export default function ProductListScreen({ navigation }) {
         throw new Error("Formato de datos Erroneo.");
       }
 
-      setProducts(data);
+      setProducts([...LOCAL_PRODUCTS, ...data]);
     } catch (error) {
       setErrorMessage(error.message || "Error desconocido al obtener productos.");
-      setProducts([]);
+      setProducts(LOCAL_PRODUCTS);
     } finally {
       setLoading(false);
     }
@@ -65,7 +115,10 @@ export default function ProductListScreen({ navigation }) {
   };
 
   const handlePressProduct = (product) => {
-    navigation.navigate("ProductDetails", { productId: product.id });
+    navigation.navigate("ProductDetails", {
+      productId: product.id,
+      product,
+    });
   };
 
   const renderProduct = ({ item }) => (
